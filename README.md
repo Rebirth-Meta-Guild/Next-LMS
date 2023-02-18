@@ -1,3 +1,4 @@
+# WE NEED TO UPDATE THIS README
 # Video Course Starter Kit
 
 This project demonstrates how you can use Next.js and Mux to build your own video course platform. You might use this repo as a starting point for building your own membership-gated video course platform. 
@@ -62,7 +63,7 @@ brew install planetscale/tap/pscale
 Next, authorize the Planetscale CLI with your newly created account by running:
 
 ```
-pscale auth
+pscale auth login
 ```
 
 Create a new database in your Planetscale account called `video-course-starter-kit`
@@ -80,7 +81,7 @@ Copy the resulting authenticated database url value into your `.env.local` file 
 We'll connect to this database locally by opening a connection to it on a local port. Here's how you can connect to the Planetscale database `video-course-starter-kit` on port 3309:
 
 ```
-pscale connect video-course-starter-kit main --port 3309
+pscale connect rebirth-lms-db main --port 3309
 ```
 
 ## Modifying the database schema
