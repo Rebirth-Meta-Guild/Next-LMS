@@ -27,8 +27,8 @@ const AdminIndex: NextPage<AdminIndexPageProps> = ({ courses }) => {
   if (session) {
     return (
       <>
-        <Heading>Admin</Heading>
-        <Heading as='h2'>Your courses</Heading>
+        <Heading>Upload Courses</Heading>
+        {/* <Heading as='h2'>Your courses</Heading> */}
 
         {courses.length > 0 ? (
           <CourseGrid courses={courses} isAdmin />

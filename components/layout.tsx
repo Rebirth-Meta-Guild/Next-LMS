@@ -1,14 +1,13 @@
-import Footer from './Footer'
-import Nav from './Nav'
+import NavBar from './NavBar'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <Nav />
-      <main className='mx-auto max-w-full md:max-w-6xl min-h-screen px-5'>
+      <NavBar />
+      <main className='mx-auto max-w-full md:max-w-6xl min-h-screen px-5 py-20'>
         {children}
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }

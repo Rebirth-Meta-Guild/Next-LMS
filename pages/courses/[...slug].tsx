@@ -10,8 +10,8 @@ import { useSession } from "next-auth/react"
 import Link from 'next/link'
 import type { NextPageWithLayout } from 'pages/_app'
 import CourseViewer from 'components/CourseViewer'
-import Nav from 'components/Nav'
 import Banner from 'components/Banner'
+import NavBar from 'components/NavBar'
 
 type VideoWithPlaceholder = Video & { placeholder?: string }
 
@@ -47,7 +47,7 @@ const ViewCourse: NextPageWithLayout<ViewCoursePageProps> = ({ course, completed
 ViewCourse.getLayout = function getLayout(page: ReactElement) {
   return (
     <>
-      <Nav />
+      <NavBar />
       {page}
     </>
   )
