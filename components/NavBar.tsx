@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { Navbar, Button, Link, Image, Text, Avatar, Dropdown, Popover, Grid } from "@nextui-org/react"
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useRouter } from 'next/router'
@@ -26,7 +26,7 @@ export default function NavBar() {
                 </Link>
             </Navbar.Brand>
             <Navbar.Content hideIn="xs" activeColor="warning">
-                <Navbar.Link href="/" isActive={router.pathname == "/" ? true : false}>Home</Navbar.Link>
+                {/* <Navbar.Link href="/" isActive={router.pathname == "/" ? true : false}>Home</Navbar.Link> */}
                 {session && (
                     <>
                         <Navbar.Link href="/admin" isActive={router.pathname == "/admin" ? true : false}>My Courses</Navbar.Link>
@@ -34,12 +34,16 @@ export default function NavBar() {
                     </>
                 )}
             </Navbar.Content>
-            <Navbar.Content>
-                <ConnectWallet accentColor="#fff" />
-            </Navbar.Content>
+            {
+                !router.pathname.startsWith("/admin") && !session && (
+                    <Navbar.Content>
+                        <ConnectWallet accentColor="#fff" />
+                    </Navbar.Content>
+                )
+            }
             {/* TODO: Add condition here for admin access only */}
             {
-                router.pathname == "/admin/*" && (
+                session && (
                     <Navbar.Content>
                         {session && session.user && session.user.image ? (
                             <Popover placement="bottom-right">
@@ -56,7 +60,7 @@ export default function NavBar() {
                                         </Grid>
                                         <Grid xs={12}>
                                             <Button size="xs" flat bordered disabled color="warning" css={{ mt: "$5" }}>
-                                                Student
+                                                Admin
                                             </Button>
                                         </Grid>
                                         <Grid xs={12}>

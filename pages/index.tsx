@@ -24,7 +24,7 @@ const Home: NextPage<HomePageProps> = ({ courses }) => {
 
   return (
     <>
-      {isLoading ? "Loading...." : ownedNfts?.length}
+      {address && isLoading ? "Loading...." : ownedNfts?.length}
       {courses.length > 0 ? (<Heading>Available Courses</Heading>) : (<Heading>No Available Courses</Heading>)}
       {courses.find(course => course.published === false) && (
         <Heading as="h4">Draft courses are only visible to you.</Heading>
