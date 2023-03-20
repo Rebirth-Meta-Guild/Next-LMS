@@ -22,9 +22,18 @@ export const authOptions: NextAuthOptions = {
     })
   ],
   callbacks: {
-    async session({ session, token, user }) {
+    async session({ session, user }) {
       if (session.user) {
-        session.user.id = user.id
+        const prismauser = await prisma.user.findUnique({
+          where: {
+            id: user.id
+          }
+        })
+        if (!prismauser) {
+          throw new Error('User not found')
+        }
+        session.user.id = prismauser.id
+        session.user.role = prismauser?.role
       }
 
       return session
