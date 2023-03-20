@@ -5,6 +5,7 @@ import { authOptions } from 'pages/api/auth/[...nextauth]'
 import { getServerSession } from "next-auth/next"
 import Heading from 'components/Heading'
 import CourseGrid from 'components/CourseGrid'
+import { useAddress, useContract, useContractMetadata, useOwnedNFTs } from '@thirdweb-dev/react'
 
 type HomePageProps = {
   courses: (Course & {
@@ -14,9 +15,16 @@ type HomePageProps = {
   })[]
 }
 
+const contractAddress = "0xffbC0b872371623b5144b87F3fCAd1bbb221AA89"
+
 const Home: NextPage<HomePageProps> = ({ courses }) => {
+  const address = useAddress();
+  const { contract } = useContract(contractAddress, "nft-drop");
+  const { data: ownedNfts, isLoading } = useOwnedNFTs(contract, address);
+
   return (
     <>
+      {isLoading ? "Loading...." : ownedNfts?.length}
       {courses.length > 0 ? (<Heading>Available Courses</Heading>) : (<Heading>No Available Courses</Heading>)}
       {courses.find(course => course.published === false) && (
         <Heading as="h4">Draft courses are only visible to you.</Heading>

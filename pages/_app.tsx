@@ -7,6 +7,7 @@ import Layout from 'components/layout'
 import { Toaster } from 'react-hot-toast'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ChainId, ThirdwebProvider } from '@thirdweb-dev/react'
 
 const queryClient = new QueryClient()
 
@@ -26,12 +27,14 @@ function MyApp({
   const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>)
 
   return (
-    <SessionProvider session={session}>
-      <QueryClientProvider client={queryClient}>
-        {getLayout(<Component {...pageProps} />)}
-        <div><Toaster /></div>
-      </QueryClientProvider>
-    </SessionProvider>
+    <ThirdwebProvider activeChain="polygon">
+      <SessionProvider session={session}>
+        <QueryClientProvider client={queryClient}>
+          {getLayout(<Component {...pageProps} />)}
+          <div><Toaster /></div>
+        </QueryClientProvider>
+      </SessionProvider>
+    </ThirdwebProvider>
   );
 }
 

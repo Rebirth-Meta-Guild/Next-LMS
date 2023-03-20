@@ -12,6 +12,7 @@ import type { NextPageWithLayout } from 'pages/_app'
 import CourseViewer from 'components/CourseViewer'
 import Banner from 'components/Banner'
 import NavBar from 'components/NavBar'
+import Head from 'next/head';
 
 type VideoWithPlaceholder = Video & { placeholder?: string }
 
@@ -47,6 +48,11 @@ const ViewCourse: NextPageWithLayout<ViewCoursePageProps> = ({ course, completed
 ViewCourse.getLayout = function getLayout(page: ReactElement) {
   return (
     <>
+      <Head>
+        <title>Rebirth LMS - Powered by Rebirth Labs</title>
+        <meta name="description" content="Powered by Rebirth Labs" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <NavBar />
       {page}
     </>

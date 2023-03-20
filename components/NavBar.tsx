@@ -1,7 +1,8 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Navbar, Button, Link, Image, Text, Avatar, Dropdown, Popover, Grid } from "@nextui-org/react"
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useRouter } from 'next/router'
+import { ConnectWallet } from "@thirdweb-dev/react"
 
 export default function NavBar() {
     const { data: session } = useSession()
@@ -22,7 +23,7 @@ export default function NavBar() {
                     <Text b color="default" hideIn="xs">
                         Rebirth LMS
                     </Text>
-                </Link> 
+                </Link>
             </Navbar.Brand>
             <Navbar.Content hideIn="xs" activeColor="warning">
                 <Navbar.Link href="/" isActive={router.pathname == "/" ? true : false}>Home</Navbar.Link>
@@ -34,41 +35,49 @@ export default function NavBar() {
                 )}
             </Navbar.Content>
             <Navbar.Content>
-                {session && session.user && session.user.image ? (
-                    <Popover placement="bottom-right">
-                        <Popover.Trigger>
-                            <Avatar src={session.user.image} color="warning" bordered />
-                        </Popover.Trigger>
-                        <Popover.Content css={{ p: '$4' }}>
-                            <Grid.Container css={{ mw: "270px", borderRadius: "$lg", padding: "$sm" }}>
-                                <Grid xs={12}>
-                                    <Text b color="inherit">Signed in as</Text>
-                                </Grid>
-                                <Grid xs={12}>
-                                    <Text b color="inherit">{session.user.email}</Text>
-                                </Grid>
-                                <Grid xs={12}>
-                                    <Button size="xs" flat bordered disabled color="warning" css={{ mt: "$5" }}>
-                                        Student
-                                    </Button>
-                                </Grid>
-                                <Grid xs={12}>
-                                    <Button flat color="error" css={{ mt: "$5" }} onClick={() => signOut()}>
-                                        Sign Out
-                                    </Button>
-                                </Grid>
-                            </Grid.Container>
-
-                        </Popover.Content>
-                    </Popover>
-                ) : (
-                    <Navbar.Link href="#">
-                        <Button auto flat color="warning" onClick={() => signIn()}>
-                            Sign in
-                        </Button>
-                    </Navbar.Link>
-                )}
+                <ConnectWallet accentColor="#fff" />
             </Navbar.Content>
+            {/* TODO: Add condition here for admin access only */}
+            {
+                router.pathname == "/admin/*" && (
+                    <Navbar.Content>
+                        {session && session.user && session.user.image ? (
+                            <Popover placement="bottom-right">
+                                <Popover.Trigger>
+                                    <Avatar src={session.user.image} color="warning" bordered />
+                                </Popover.Trigger>
+                                <Popover.Content css={{ p: '$4' }}>
+                                    <Grid.Container css={{ mw: "270px", borderRadius: "$lg", padding: "$sm" }}>
+                                        <Grid xs={12}>
+                                            <Text b color="inherit">Signed in as</Text>
+                                        </Grid>
+                                        <Grid xs={12}>
+                                            <Text b color="inherit">{session.user.email}</Text>
+                                        </Grid>
+                                        <Grid xs={12}>
+                                            <Button size="xs" flat bordered disabled color="warning" css={{ mt: "$5" }}>
+                                                Student
+                                            </Button>
+                                        </Grid>
+                                        <Grid xs={12}>
+                                            <Button flat color="error" css={{ mt: "$5" }} onClick={() => signOut()}>
+                                                Sign Out
+                                            </Button>
+                                        </Grid>
+                                    </Grid.Container>
+
+                                </Popover.Content>
+                            </Popover>
+                        ) : (
+                            <Navbar.Link href="#">
+                                <Button auto flat color="warning" onClick={() => signIn()}>
+                                    Sign in
+                                </Button>
+                            </Navbar.Link>
+                        )}
+                    </Navbar.Content>
+                )
+            }
             <Navbar.Collapse>
                 {collapseItems.map((item, index) => (
                     <Navbar.CollapseItem
