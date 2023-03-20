@@ -3,6 +3,7 @@ import TextInput from 'components/forms/TextInput';
 import TextAreaInput from 'components/forms/TextAreaInput';
 import SubmitInput from 'components/forms/SubmitInput';
 import { Lesson } from "@prisma/client";
+import ActionButton from "./ActionButton";
 
 export type Inputs = {
   name: string;
@@ -20,10 +21,10 @@ const LessonForm = ({ lesson, onSubmit, isLoading }: Props) => {
 
   return (
     <FormProvider {...methods}>
-      <form className='flex flex-col max-w-lg' onSubmit={methods.handleSubmit(onSubmit)}>
+      <form className='flex flex-col max-w-lg'>
         <TextInput label='Name' name='name' options={{ required: true }} />
         <TextAreaInput label='Description' name='description' options={{ required: true }} />
-        <SubmitInput value={`${lesson ? 'Update' : 'Create'} lesson`} isLoading={isLoading} />
+        <ActionButton value={`${lesson ? 'Update' : 'Create'}`} color="warning" isLoading={isLoading} onClickEvent={methods.handleSubmit(onSubmit)} />
       </form>
     </FormProvider>
   )

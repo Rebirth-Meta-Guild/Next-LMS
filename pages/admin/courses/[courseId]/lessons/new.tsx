@@ -19,6 +19,7 @@ import TextInput from 'components/forms/TextInput';
 import TextAreaInput from 'components/forms/TextAreaInput';
 import Field from 'components/forms/Field';
 import SubmitInput from 'components/forms/SubmitInput';
+import ActionButton from 'components/forms/ActionButton';
 
 type Inputs = {
   name: string;
@@ -53,6 +54,7 @@ const AdminNewLesson: NextPage<AdminNewLessonPageProps> = ({ uploadUrl, uploadId
   const mutation = useMutation(handler, {
     onSuccess: (data: LessonCreateResult) => {
       router.push(`/admin/courses/${courseId}/lessons/${data.id}`)
+      toast.success('Lesson created successfully')
     },
     onError: (error) => {
       console.error(error)
@@ -68,7 +70,7 @@ const AdminNewLesson: NextPage<AdminNewLessonPageProps> = ({ uploadUrl, uploadId
     <>
       <Heading>New lesson</Heading>
       <FormProvider {...methods}>
-        <form className='flex flex-col max-w-xl' onSubmit={methods.handleSubmit(onSubmit)}>
+        <form className='flex flex-col max-w-xl'>
           <TextInput label='Name' name='name' options={{ required: true }} />
           <TextAreaInput label='Description' name='description' options={{ required: true }} />
 
@@ -86,12 +88,9 @@ const AdminNewLesson: NextPage<AdminNewLessonPageProps> = ({ uploadUrl, uploadId
           <input type="hidden" {...methods.register("uploadId", { value: uploadId, required: true })} />
           <input type="hidden" {...methods.register("courseId", { value: courseId, required: true })} />
 
-          <input
-            type="submit"
-            className='bg-blue-500 text-white p-4 disabled:bg-slate-50 disabled:text-gray-400 cursor-pointer disabled:cursor-not-allowed w-fit'
-            value='Create lesson'
-            disabled={!isVideoUploaded}
-          />
+          {isVideoUploaded && (
+            <ActionButton value="Create lesson" color="warning" isLoading={mutation.isLoading} onClickEvent={methods.handleSubmit(onSubmit)} />
+          )}
         </form>
       </FormProvider>
     </>

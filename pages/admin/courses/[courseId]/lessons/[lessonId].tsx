@@ -9,9 +9,10 @@ import { useRouter } from 'next/router'
 import { SubmitHandler } from "react-hook-form";
 import MuxPlayer from "@mux/mux-player-react/lazy";
 import LessonForm, { Inputs } from 'components/forms/LessonForm'
-import Button from 'components/Button'
 import toast from 'react-hot-toast';
 import { useMutation } from '@tanstack/react-query'
+import ActionButton from 'components/forms/ActionButton'
+import { Spacer } from '@nextui-org/react'
 
 type AdminLessonEditPageProps = {
   session: Session;
@@ -36,6 +37,7 @@ const AdminLessonEdit: NextPage<AdminLessonEditPageProps> = ({ lesson }) => {
 
   const updateMutation = useMutation(updateLesson, {
     onSuccess: () => {
+      router.push(`/admin/courses/${lesson.courseId}`)
       toast.success('Lesson updated successfully')
     },
     onError: (error) => {
@@ -59,6 +61,10 @@ const AdminLessonEdit: NextPage<AdminLessonEditPageProps> = ({ lesson }) => {
     updateMutation.mutate(data);
   };
 
+  const onDelete = () => {
+    deleteMutation.mutate();
+  };
+
   if (session) {
     return (
       <div className='grid lg:grid-cols-2 gap-6'>
@@ -77,11 +83,11 @@ const AdminLessonEdit: NextPage<AdminLessonEditPageProps> = ({ lesson }) => {
           ) : (
             <div className='mb-6 w-full aspect-video bg-gray-200' />
           )}
-
-          <Button intent="danger" onClick={deleteMutation.mutate}>Delete this lesson</Button>
         </div>
-        <div>
+        <div className='flex flex-col max-w-lg'>
           <LessonForm onSubmit={onSubmit} lesson={lesson} isLoading={updateMutation.isLoading} />
+          <Spacer />
+          <ActionButton isBordered value="Delete" color="error" isLoading={deleteMutation.isLoading} onClickEvent={onDelete} />
         </div>
       </div>
     )

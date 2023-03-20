@@ -26,22 +26,21 @@ export default function NavBar() {
                 </Link>
             </Navbar.Brand>
             <Navbar.Content hideIn="xs" activeColor="warning">
-                {/* <Navbar.Link href="/" isActive={router.pathname == "/" ? true : false}>Home</Navbar.Link> */}
                 {session && (
                     <>
+                        <Navbar.Link href="/" isActive={router.pathname == "/" ? true : false}>Home</Navbar.Link>
                         <Navbar.Link href="/admin" isActive={router.pathname == "/admin" ? true : false}>My Courses</Navbar.Link>
                         <Navbar.Link href="/admin/users" isActive={router.pathname == "/admin/users" ? true : false}>Users</Navbar.Link>
                     </>
                 )}
             </Navbar.Content>
             {
-                !router.pathname.startsWith("/admin") && !session && (
+                !router.pathname.startsWith("/admin") && session?.user.role != "admin" && (
                     <Navbar.Content>
                         <ConnectWallet accentColor="#fff" />
                     </Navbar.Content>
                 )
             }
-            {/* TODO: Add condition here for admin access only */}
             {
                 session && (
                     <Navbar.Content>
@@ -60,7 +59,7 @@ export default function NavBar() {
                                         </Grid>
                                         <Grid xs={12}>
                                             <Button size="xs" flat bordered disabled color="warning" css={{ mt: "$5" }}>
-                                                Admin
+                                                {session.user.role}
                                             </Button>
                                         </Grid>
                                         <Grid xs={12}>

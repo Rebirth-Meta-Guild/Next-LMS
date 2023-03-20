@@ -13,6 +13,11 @@ import CourseViewer from 'components/CourseViewer'
 import Banner from 'components/Banner'
 import NavBar from 'components/NavBar'
 import Head from 'next/head';
+import { useAddress, useContract, useOwnedNFTs } from '@thirdweb-dev/react';
+import { Grid, Loading } from '@nextui-org/react';
+import Heading from 'components/Heading';
+
+const contractAddress = "0xffbC0b872371623b5144b87F3fCAd1bbb221AA89"
 
 type VideoWithPlaceholder = Video & { placeholder?: string }
 
@@ -26,22 +31,38 @@ type ViewCoursePageProps = {
 }
 
 const ViewCourse: NextPageWithLayout<ViewCoursePageProps> = ({ course, completedLessons }) => {
+  const address = useAddress()
   const { data: session } = useSession()
+  const { contract } = useContract(contractAddress, "nft-drop")
+  const { data: ownedNfts, isLoading } = useOwnedNFTs(contract, address)
   const [lessonProgress, setLessonProgress] = useState(completedLessons)
 
   return (
-    <>
-      {!session && (
-        <Banner>
-          <p className='text-center'>
-            <Link href='/api/auth/signin'>
-              <a className='underline'>Sign in</a>
-            </Link> to track your progress &rarr;{' '}
-          </p>
-        </Banner>
-      )}
-      <CourseViewer course={course} lessonProgress={lessonProgress} setLessonProgress={setLessonProgress} />
-    </>
+    <Grid.Container justify="center">
+      {address && isLoading ? (
+        <Grid>
+          <Loading color="warning" />
+        </Grid>
+      )
+        : (
+          session || (ownedNfts && ownedNfts?.length > 0) ? (
+            <>
+              <Banner>
+                <p className='text-center'>
+                  <Link href='/api/auth/signin'>
+                    <a className='underline'>Sign in</a>
+                  </Link> to track your progress &rarr;{' '}
+                </p>
+              </Banner>
+              <CourseViewer course={course} lessonProgress={lessonProgress} setLessonProgress={setLessonProgress} />
+            </>
+          ) :
+            (
+              <Heading>Access Denied</Heading>
+            )
+        )
+      }
+    </Grid.Container>
   )
 }
 

@@ -40,7 +40,14 @@ export default Users;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
-
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/admin/login',
+        permanent: false,
+      },
+    }
+  }
   const users = await prisma.user.findMany();
 
   return {

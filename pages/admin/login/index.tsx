@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react"
+import { Button, Grid } from "@nextui-org/react"
 import Heading from "components/Heading"
 import type { GetServerSideProps, NextPage } from "next"
 import { getServerSession } from "next-auth"
@@ -10,12 +10,16 @@ const AdminLogin: NextPage = () => {
 
     if (!session) {
         return (
-            <>
-                <Heading> Please sign in to access this page. </Heading>
-                <Button ghost color="warning" size="lg" onClick={() => signIn()}>
-                    Sign in
-                </Button>
-            </>
+            <Grid.Container>
+                <Grid xs={12} justify="center">
+                    <Heading> Please sign in to access this page. </Heading>
+                </Grid>
+                <Grid xs={12} justify="center">
+                    <Button ghost color="warning" size="lg" onClick={() => signIn()}>
+                        Sign in
+                    </Button>
+                </Grid>
+            </Grid.Container>
         )
     }
     return <p>Access Denied.</p>

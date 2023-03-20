@@ -4,6 +4,7 @@ import TextAreaInput from './TextAreaInput';
 import SubmitInput from './SubmitInput';
 import Checkbox from "./Checkbox";
 import { Course } from "@prisma/client";
+import ActionButton from "./ActionButton";
 
 export type Inputs = {
   name: string;
@@ -22,11 +23,11 @@ const CourseForm = ({ course, onSubmit, isLoading }: Props) => {
 
   return (
     <FormProvider {...methods}>
-      <form className='flex flex-col max-w-lg' onSubmit={methods.handleSubmit(onSubmit)}>
+      <form className='flex flex-col max-w-lg'>
         <TextInput label='Name' name='name' options={{ required: true }} />
         <TextAreaInput label='Description' name='description' options={{ required: true }} />
         <Checkbox label='Publish' name='published' />
-        <SubmitInput value={`${course ? 'Update' : 'Create'} course`} isLoading={isLoading} />
+        <ActionButton value={`${course ? 'Update' : 'Create'} course`} color="warning" isLoading={isLoading} onClickEvent={methods.handleSubmit(onSubmit)} />
       </form>
     </FormProvider>
   )

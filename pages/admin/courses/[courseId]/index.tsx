@@ -11,9 +11,12 @@ import Image from 'next/future/image'
 import CourseForm, { Inputs } from 'components/forms/CourseForm';
 import { SubmitHandler } from "react-hook-form";
 import Heading from 'components/Heading';
-import Button from 'components/Button';
 import toast from 'react-hot-toast';
 import { useMutation } from '@tanstack/react-query'
+import { Button, Grid, Loading } from "@nextui-org/react"
+import router from 'next/router'
+import { useState } from 'react'
+import ActionButton from 'components/forms/ActionButton'
 
 type AdminCourseEditPageProps = {
   session: Session;
@@ -30,6 +33,7 @@ type CourseUpdateResult = {
 
 const AdminCourseEdit: NextPage<AdminCourseEditPageProps> = ({ course }) => {
   const { data: session } = useSession()
+  const [isAddNewLessonLoading, setIsAddNewLessonLoading] = useState(false);
 
   const handler = (data: Inputs) => {
     return fetch(`/api/courses/${course.id}`, {
@@ -40,6 +44,7 @@ const AdminCourseEdit: NextPage<AdminCourseEditPageProps> = ({ course }) => {
   const mutation = useMutation(handler, {
     onSuccess: (data: CourseUpdateResult) => {
       toast.success('Course updated successfully')
+      router.push(`/admin`);
     },
     onError: (error) => {
       console.error(error)
@@ -49,6 +54,11 @@ const AdminCourseEdit: NextPage<AdminCourseEditPageProps> = ({ course }) => {
 
   const onSubmit: SubmitHandler<Inputs> = async data => {
     mutation.mutate(data);
+  };
+
+  const addNewLesson = () => {
+    setIsAddNewLessonLoading(true);
+    router.push(`/admin/courses/${course.id}/lessons/new`);
   };
 
   if (session) {
@@ -85,14 +95,10 @@ const AdminCourseEdit: NextPage<AdminCourseEditPageProps> = ({ course }) => {
               }
             </>
           ) : (
-            <div>
-              <h2>None yet.</h2>
-            </div>
+            <></>
           )}
 
-          <Link href={`/admin/courses/${course.id}/lessons/new`}>
-            <Button intent='secondary'>Add a lesson</Button>
-          </Link>
+          <ActionButton value="Add a lesson" color="warning" isBordered isLoading={isAddNewLessonLoading} onClickEvent={addNewLesson} />
         </div>
       </div>
     )

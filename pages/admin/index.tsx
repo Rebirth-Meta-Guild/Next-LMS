@@ -6,11 +6,14 @@ import { authOptions } from 'pages/api/auth/[...nextauth]'
 import { getServerSession } from "next-auth/next"
 import type { Session } from 'next-auth'
 import type { Course, Lesson, Video } from '@prisma/client'
-import Link from 'next/link'
 import CourseGrid from 'components/CourseGrid'
-import Button from 'components/Button'
 
 import Heading from 'components/Heading'
+import { Grid, Button } from '@nextui-org/react'
+import router from 'next/router'
+import ActionButton from 'components/forms/ActionButton'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
 
 type AdminIndexPageProps = {
   session: Session;
@@ -23,25 +26,32 @@ type AdminIndexPageProps = {
 
 const AdminIndex: NextPage<AdminIndexPageProps> = ({ courses }) => {
   const { data: session } = useSession()
+  const [isAddNewCourseLoading, setIsAddNewCourseLoading] = useState(false);
+
+  const addNewCourse = () => {
+    setIsAddNewCourseLoading(true);
+    router.push('/admin/courses/new');
+  };
 
   if (session) {
     return (
-      <>
-        <Heading>Upload Courses</Heading>
-        {/* <Heading as='h2'>Your courses</Heading> */}
-
-        {courses.length > 0 ? (
-          <CourseGrid courses={courses} isAdmin />
-        ) : (
-          <div>
-            <Heading as='h3'>You don&apos;t have any courses yet.</Heading>
-          </div>
-        )}
-
-        <Link href="/admin/courses/new">
-          <Button>Create a course</Button>
-        </Link>
-      </>
+      <Grid.Container gap={1}>
+        <Grid sm={10} xs={12}>
+          <Heading>Upload Courses</Heading>
+        </Grid>
+        <Grid sm={1} xs={12}>
+          <ActionButton value="Create a course" onClickEvent={addNewCourse} color="warning" isLoading={isAddNewCourseLoading} />
+        </Grid>
+        <Grid>
+          {courses.length > 0 ? (
+            <CourseGrid courses={courses} isAdmin />
+          ) : (
+            <div>
+              <Heading as='h3'>You don&apos;t have any courses yet.</Heading>
+            </div>
+          )}
+        </Grid>
+      </Grid.Container>
     )
   }
   return <p>Access Denied</p>
