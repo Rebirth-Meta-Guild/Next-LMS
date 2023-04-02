@@ -9,7 +9,7 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      cal: ["Cal Sans", "Inter var", "sans-serif"],
+      cal: ["proxima-nova", "sans-serif"],
     },
     extend: {
       colors: {
@@ -31,15 +31,6 @@ module.exports = {
       typography: {
         DEFAULT: {
           css: {
-            h1: {
-              fontFamily: "Cal Sans",
-            },
-            h2: {
-              fontFamily: "Cal Sans",
-            },
-            h3: {
-              fontFamily: "Cal Sans",
-            },
             "blockquote p:first-of-type::before": { content: "none" },
             "blockquote p:first-of-type::after": { content: "none" },
           },

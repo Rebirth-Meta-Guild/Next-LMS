@@ -1,0 +1,42 @@
+:root {
+    --black: #000;
+    --bg-color: #1b1b1b;
+    --font-color: #fffff7;
+    --primary-color: #ef4130;
+}
+
+@font-face {
+    font-family: proxima-nova;
+    src: url(../public/fonts/Proxima\ Nova\ Font.otf);
+ }
+
+body {
+    color: var(--font-color) !important;
+}
+
+#__next {
+    background: var(--black);
+}
+
+main {
+    max-width: 1700px !important;
+    background: var(--bg-color);
+    padding-left: 10rem;
+    padding-right: 10rem;
+}
+
+.nextui-navbar{
+    box-shadow: none !important;
+}
+
+.nextui-navbar-container {
+    max-width: 1700px !important;
+    background: var(--bg-color) !important;
+    border-bottom: none !important;
+    padding: 75px 40px 10px !important;
+}
+
+h1, h2, h3, h4, h5, p, label {
+    color: var(--font-color) !important;
+    letter-spacing: normal !important;
+}

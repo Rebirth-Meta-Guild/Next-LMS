@@ -35,8 +35,8 @@ const AdminIndex: NextPage<AdminIndexPageProps> = ({ courses }) => {
 
   if (session) {
     return (
-      <Grid.Container gap={1}>
-        <Grid sm={10} xs={12}>
+      <Grid.Container gap={1} justify="center">
+        <Grid sm={8} xs={12}>
           <Heading>Upload Courses</Heading>
         </Grid>
         <Grid sm={1} xs={12}>

@@ -70,7 +70,7 @@ ViewCourse.getLayout = function getLayout(page: ReactElement) {
   return (
     <>
       <Head>
-        <title>Rebirth LMS - Powered by Rebirth Labs</title>
+        <title>Project GodJira (PG) - Powered by Rebirth Labs</title>
         <meta name="description" content="Powered by Rebirth Labs" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

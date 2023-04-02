@@ -10,7 +10,7 @@ const Nav = () => {
   return (
     <>
       <Head>
-        <title>Rebirth LMS - Powered by Rebirth Labs</title>
+        <title>Project GodJira (PG) - Powered by Rebirth Labs</title>
         <meta name="description" content="Powered by Rebirth Labs" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -18,7 +18,7 @@ const Nav = () => {
         <div className='flex-1 flex'>
           <Link href="/" passHref>
             <a className="flex">
-              <Image alt="Rebirth LMS" src="/images/logo.png" height={30} width={30}/>
+              <Image alt="Project GodJira" src="/images/logo.png" height={30} width={30}/>
             </a>
           </Link>
         </div>
@@ -32,7 +32,7 @@ const Nav = () => {
               </a>
             </Link>
           </li>
-          {session && (
+          {session && session?.user.role == "admin" && (
             <li>
               <Link href="/admin">
                 <a className='underline'>Admin</a>
@@ -40,21 +40,6 @@ const Nav = () => {
             </li>
           )}
         </ul>
-        {/* <div className='flex-1 flex justify-center'>
-          <Link href="/" passHref>
-            <a className="flex justify-center items-center">
-              <Image
-                alt="Rebirth LMS"
-                height={30}
-                src="/images/logo.png"
-                width={30}
-              />
-              <span className="inline-block ml-3 font-medium truncate text-slate-700">
-                Rebirth LMS
-              </span>
-            </a>
-          </Link>
-        </div> */}
         <div className='text-right text-sm'>
           {session ? (
             <div className='text-slate-700'>

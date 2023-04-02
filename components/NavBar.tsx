@@ -15,29 +15,26 @@ export default function NavBar() {
     ];
 
     return (
-        <Navbar isBordered variant="sticky">
+        <Navbar variant="sticky">
             <Navbar.Toggle showIn="xs" />
-            <Navbar.Brand>
+            <Navbar.Brand css={{paddingLeft: "20px"}}>
                 <Link href="/">
-                    <Image width={40} height={40} alt="Rebirth LMS" src="/images/logo.png" />
-                    <Text b color="default" hideIn="xs">
-                        Rebirth LMS
-                    </Text>
+                    <Image width={72} height={72} alt="Rebirth LMS" src="/images/logo.png" />
                 </Link>
             </Navbar.Brand>
             <Navbar.Content hideIn="xs" activeColor="warning">
                 {session && (
                     <>
-                        <Navbar.Link href="/" isActive={router.pathname == "/" ? true : false}>Home</Navbar.Link>
-                        <Navbar.Link href="/admin" isActive={router.pathname == "/admin" ? true : false}>My Courses</Navbar.Link>
-                        <Navbar.Link href="/admin/users" isActive={router.pathname == "/admin/users" ? true : false}>Users</Navbar.Link>
+                        <Navbar.Link href="/" css={{ textTransform: "uppercase", fontWeight: "700 !important"  }} isActive={router.pathname == "/" ? true : false}>Home</Navbar.Link>
+                        <Navbar.Link href="/admin" css={{ textTransform: "uppercase", fontWeight: "700 !important"  }} isActive={router.pathname == "/admin" ? true : false}>My Courses</Navbar.Link>
+                        <Navbar.Link href="/admin/users" css={{ textTransform: "uppercase", fontWeight: "700 !important"  }} isActive={router.pathname == "/admin/users" ? true : false}>Users</Navbar.Link>
                     </>
                 )}
             </Navbar.Content>
             {
                 !router.pathname.startsWith("/admin") && session?.user.role != "admin" && (
                     <Navbar.Content>
-                        <ConnectWallet accentColor="#fff" />
+                        <ConnectWallet accentColor="#EF412F" />
                     </Navbar.Content>
                 )
             }
