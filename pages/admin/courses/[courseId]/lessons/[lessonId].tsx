@@ -11,8 +11,7 @@ import MuxPlayer from "@mux/mux-player-react/lazy";
 import LessonForm, { Inputs } from 'components/forms/LessonForm'
 import toast from 'react-hot-toast';
 import { useMutation } from '@tanstack/react-query'
-import ActionButton from 'components/forms/ActionButton'
-import { Spacer } from '@nextui-org/react'
+import { Container, Grid } from '@nextui-org/react'
 
 type AdminLessonEditPageProps = {
   session: Session;
@@ -67,29 +66,31 @@ const AdminLessonEdit: NextPage<AdminLessonEditPageProps> = ({ lesson }) => {
 
   if (session) {
     return (
-      <div className='grid lg:grid-cols-2 gap-6'>
-        <div>
-          {lesson.video?.status === "ready" && lesson.video.publicPlaybackId ? (
-            <MuxPlayer
-              className='mb-6 w-full aspect-video'
-              streamType="on-demand"
-              playbackId={lesson.video.publicPlaybackId}
-              metadata={{
-                video_series: lesson.courseId,
-                video_title: lesson.name,
-                player_name: "Video Course Starter Kit",
-              }}
-            />
-          ) : (
-            <div className='mb-6 w-full aspect-video bg-gray-200' />
-          )}
-        </div>
-        <div className='flex flex-col max-w-lg'>
-          <LessonForm onSubmit={onSubmit} lesson={lesson} isLoading={updateMutation.isLoading} />
-          <Spacer />
-          <ActionButton isBordered value="Delete" color="error" isLoading={deleteMutation.isLoading} onClickEvent={onDelete} />
-        </div>
-      </div>
+        <Grid.Container gap={2} justify="center">
+          <Grid sm={5} xs={12}>
+            <Container>
+              {lesson.video?.status === "ready" && lesson.video.publicPlaybackId ? (
+                <MuxPlayer
+                  className='mb-6 w-full aspect-video'
+                  streamType="on-demand"
+                  playbackId={lesson.video.publicPlaybackId}
+                  metadata={{
+                    video_series: lesson.courseId,
+                    video_title: lesson.name,
+                    player_name: "Video Course Starter Kit",
+                  }}
+                />
+              ) : (
+                <div className='mb-6 w-full aspect-video bg-gray-200' />
+              )}
+            </Container>
+          </Grid>
+          <Grid sm={5} xs={12}>
+            <Container>
+              <LessonForm onSubmit={onSubmit} lesson={lesson} isLoading={updateMutation.isLoading} onDelete={onDelete} isDeleteLoading={deleteMutation.isLoading} />
+            </Container>
+          </Grid>
+        </Grid.Container>
     )
   }
   return <p>Access Denied</p>

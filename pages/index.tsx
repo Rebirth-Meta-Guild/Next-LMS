@@ -26,7 +26,7 @@ const Home: NextPage<HomePageProps> = ({ courses }) => {
   const { data: ownedNfts, isLoading } = useOwnedNFTs(contract, address)
 
   return (
-    <Grid.Container justify="center">
+    <Grid.Container gap={2} justify="center">
       <Grid>
         {courses.length > 0 ? (<Heading>Available Courses</Heading>) : (<Heading>No Available Courses</Heading>)}
         {courses.find(course => course.published === false) && (

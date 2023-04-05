@@ -18,8 +18,9 @@ import Heading from 'components/Heading';
 import TextInput from 'components/forms/TextInput';
 import TextAreaInput from 'components/forms/TextAreaInput';
 import Field from 'components/forms/Field';
-import SubmitInput from 'components/forms/SubmitInput';
 import ActionButton from 'components/forms/ActionButton';
+import { Button, Container, Grid, Spacer } from '@nextui-org/react';
+import BackButton from 'components/forms/BackButton';
 
 type Inputs = {
   name: string;
@@ -67,33 +68,38 @@ const AdminNewLesson: NextPage<AdminNewLessonPageProps> = ({ uploadUrl, uploadId
   };
 
   return (
-    <>
-      <Heading>New lesson</Heading>
-      <FormProvider {...methods}>
-        <form className='flex flex-col max-w-xl'>
-          <TextInput label='Name' name='name' options={{ required: true }} />
-          <TextAreaInput label='Description' name='description' options={{ required: true }} />
+    <Grid.Container gap={2} justify="center">
+      <Grid sm={8} xs={12}>
+        <Container>
+          <Heading>New lesson</Heading>
+          <FormProvider {...methods}>
+            <form className='flex flex-col max-w-xl'>
+              <TextInput label='Name' name='name' options={{ required: true }} />
+              <TextAreaInput label='Description' name='description' options={{ required: true }} />
+              <Field>
+                <MuxUploader
+                  endpoint={uploadUrl}
+                  type="bar"
+                  onSuccess={() => setIsVideoUploaded(true)}
+                  className='w-full mb-6'
+                />
+              </Field>
 
-          <Field>
-            <MuxUploader
-              endpoint={uploadUrl}
-              type="bar"
-              status
-              style={{ '--button-border-radius': '40px' }}
-              onSuccess={() => setIsVideoUploaded(true)}
-              className='w-full mb-6'
-            />
-          </Field>
+              <input type="hidden" {...methods.register("uploadId", { value: uploadId, required: true })} />
+              <input type="hidden" {...methods.register("courseId", { value: courseId, required: true })} />
 
-          <input type="hidden" {...methods.register("uploadId", { value: uploadId, required: true })} />
-          <input type="hidden" {...methods.register("courseId", { value: courseId, required: true })} />
-
-          {isVideoUploaded && (
-            <ActionButton value="Create lesson" color="warning" isLoading={mutation.isLoading} onClickEvent={methods.handleSubmit(onSubmit)} />
-          )}
-        </form>
-      </FormProvider>
-    </>
+              {isVideoUploaded && (
+                <>
+                  <ActionButton value="Create lesson" color="primary" isLoading={mutation.isLoading} onClickEvent={methods.handleSubmit(onSubmit)} />
+                  <Spacer />
+                </>
+              )}
+              <BackButton url={`/admin/courses/${courseId}`}/>
+            </form>
+          </FormProvider>
+        </Container>
+      </Grid>
+    </Grid.Container>
   );
 }
 

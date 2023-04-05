@@ -17,66 +17,68 @@ export default function NavBar() {
     return (
         <Navbar variant="sticky">
             <Navbar.Toggle showIn="xs" />
-            <Navbar.Brand css={{paddingLeft: "20px"}}>
+            <Navbar.Brand css={{ paddingLeft: "20px" }}>
                 <Link href="/">
                     <Image width={72} height={72} alt="Rebirth LMS" src="/images/logo.png" />
                 </Link>
             </Navbar.Brand>
-            <Navbar.Content hideIn="xs" activeColor="warning">
-                {session && (
+            <Navbar.Content hideIn="xs" activeColor="primary">
+                {session && session.user.role != "student" && (
                     <>
-                        <Navbar.Link href="/" css={{ textTransform: "uppercase", fontWeight: "700 !important"  }} isActive={router.pathname == "/" ? true : false}>Home</Navbar.Link>
-                        <Navbar.Link href="/admin" css={{ textTransform: "uppercase", fontWeight: "700 !important"  }} isActive={router.pathname == "/admin" ? true : false}>My Courses</Navbar.Link>
-                        <Navbar.Link href="/admin/users" css={{ textTransform: "uppercase", fontWeight: "700 !important"  }} isActive={router.pathname == "/admin/users" ? true : false}>Users</Navbar.Link>
+                        <Navbar.Link href="/" css={{ textTransform: "uppercase", fontWeight: "700 !important" }} isActive={router.pathname == "/" ? true : false}>Home</Navbar.Link>
+                        <Navbar.Link href="/admin" css={{ textTransform: "uppercase", fontWeight: "700 !important" }} isActive={router.pathname == "/admin" ? true : false}>My Courses</Navbar.Link>
+                        {session.user.role == "admin" && (
+                            <Navbar.Link href="/admin/users" css={{ textTransform: "uppercase", fontWeight: "700 !important" }} isActive={router.pathname == "/admin/users" ? true : false}>Users</Navbar.Link>
+                        )}
                     </>
                 )}
             </Navbar.Content>
-            {
-                !router.pathname.startsWith("/admin") && session?.user.role != "admin" && (
-                    <Navbar.Content>
+            {session == null && !router.pathname.startsWith("/admin") && (
+                <Navbar.Content>
+                    <ConnectWallet accentColor="#EF412F" />
+                </Navbar.Content>
+            )}
+            {session && (
+                <Navbar.Content>
+                    {session.user.role == "student" && (
                         <ConnectWallet accentColor="#EF412F" />
-                    </Navbar.Content>
-                )
-            }
-            {
-                session && (
-                    <Navbar.Content>
-                        {session && session.user && session.user.image ? (
-                            <Popover placement="bottom-right">
-                                <Popover.Trigger>
-                                    <Avatar src={session.user.image} color="warning" bordered />
-                                </Popover.Trigger>
-                                <Popover.Content css={{ p: '$4' }}>
-                                    <Grid.Container css={{ mw: "270px", borderRadius: "$lg", padding: "$sm" }}>
-                                        <Grid xs={12}>
-                                            <Text b color="inherit">Signed in as</Text>
-                                        </Grid>
-                                        <Grid xs={12}>
-                                            <Text b color="inherit">{session.user.email}</Text>
-                                        </Grid>
-                                        <Grid xs={12}>
-                                            <Button size="xs" flat bordered disabled color="warning" css={{ mt: "$5" }}>
-                                                {session.user.role}
-                                            </Button>
-                                        </Grid>
-                                        <Grid xs={12}>
-                                            <Button flat color="error" css={{ mt: "$5" }} onClick={() => signOut()}>
-                                                Sign Out
-                                            </Button>
-                                        </Grid>
-                                    </Grid.Container>
+                    )}
+                    {session && session.user && session.user.image ? (
+                        <Popover placement="bottom-right">
+                            <Popover.Trigger>
+                                <Avatar src={session.user.image} color="primary" bordered />
+                            </Popover.Trigger>
+                            <Popover.Content css={{ p: '$4' }}>
+                                <Grid.Container css={{ mw: "270px", borderRadius: "$lg", padding: "$sm" }}>
+                                    <Grid xs={12}>
+                                        <Text b color="inherit">Signed in as</Text>
+                                    </Grid>
+                                    <Grid xs={12}>
+                                        <Text b color="inherit">{session.user.email}</Text>
+                                    </Grid>
+                                    <Grid xs={12}>
+                                        <Button size="xs" flat bordered disabled color="primary" css={{ mt: "$5" }}>
+                                            {session.user.role}
+                                        </Button>
+                                    </Grid>
+                                    <Grid xs={12}>
+                                        <Button flat color="error" css={{ mt: "$5" }} onClick={() => signOut()}>
+                                            Sign Out
+                                        </Button>
+                                    </Grid>
+                                </Grid.Container>
 
-                                </Popover.Content>
-                            </Popover>
-                        ) : (
-                            <Navbar.Link href="#">
-                                <Button auto flat color="warning" onClick={() => signIn()}>
-                                    Sign in
-                                </Button>
-                            </Navbar.Link>
-                        )}
-                    </Navbar.Content>
-                )
+                            </Popover.Content>
+                        </Popover>
+                    ) : (
+                        <Navbar.Link href="#">
+                            <Button auto flat color="primary" onClick={() => signIn()}>
+                                Sign in
+                            </Button>
+                        </Navbar.Link>
+                    )}
+                </Navbar.Content>
+            )
             }
             <Navbar.Collapse>
                 {collapseItems.map((item, index) => (

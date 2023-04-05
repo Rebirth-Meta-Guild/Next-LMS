@@ -15,7 +15,7 @@ const AdminLogin: NextPage = () => {
                     <Heading> Please sign in to access this page. </Heading>
                 </Grid>
                 <Grid xs={12} justify="center">
-                    <Button ghost color="warning" size="lg" onClick={() => signIn()}>
+                    <Button ghost color="primary" size="lg" onClick={() => signIn()}>
                         Sign in
                     </Button>
                 </Grid>
@@ -31,11 +31,21 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const session = await getServerSession(context.req, context.res, authOptions)
 
     if (session) {
-        return {
-            redirect: {
-                destination: '/admin',
-                permanent: false,
-            },
+        if (session.user.role == "admin" || session.user.role == "teacher") {
+            return {
+                redirect: {
+                    destination: '/admin',
+                    permanent: false,
+                },
+            }
+        }
+        else {
+            return {
+                redirect: {
+                    destination: '/',
+                    permanent: false,
+                },
+            }
         }
     }
 

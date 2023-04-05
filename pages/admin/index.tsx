@@ -13,7 +13,6 @@ import { Grid, Button } from '@nextui-org/react'
 import router from 'next/router'
 import ActionButton from 'components/forms/ActionButton'
 import { useState } from 'react'
-import toast from 'react-hot-toast'
 
 type AdminIndexPageProps = {
   session: Session;
@@ -33,28 +32,25 @@ const AdminIndex: NextPage<AdminIndexPageProps> = ({ courses }) => {
     router.push('/admin/courses/new');
   };
 
-  if (session) {
-    return (
-      <Grid.Container gap={1} justify="center">
-        <Grid sm={8} xs={12}>
-          <Heading>Upload Courses</Heading>
-        </Grid>
-        <Grid sm={1} xs={12}>
-          <ActionButton value="Create a course" onClickEvent={addNewCourse} color="warning" isLoading={isAddNewCourseLoading} />
-        </Grid>
-        <Grid>
-          {courses.length > 0 ? (
+  return (
+    <Grid.Container gap={2} justify="center">
+      <Grid>
+        {session && (session.user.role == "admin" || session.user.role == "teacher") ?
+          <>
+            <Heading>
+              Upload Courses
+            </Heading>
+            <Heading>
+              <ActionButton value="Create a course" onClickEvent={addNewCourse} color="primary" isLoading={isAddNewCourseLoading} />
+            </Heading>
             <CourseGrid courses={courses} isAdmin />
-          ) : (
-            <div>
-              <Heading as='h3'>You don&apos;t have any courses yet.</Heading>
-            </div>
-          )}
-        </Grid>
-      </Grid.Container>
-    )
-  }
-  return <p>Access Denied</p>
+          </>
+          :
+          <Heading>Access Denied</Heading>
+        }
+      </Grid>
+    </Grid.Container>
+  )
 }
 
 export default AdminIndex

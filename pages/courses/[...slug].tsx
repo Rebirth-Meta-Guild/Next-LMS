@@ -41,7 +41,7 @@ const ViewCourse: NextPageWithLayout<ViewCoursePageProps> = ({ course, completed
     <Grid.Container justify="center">
       {address && isLoading ? (
         <Grid>
-          <Loading color="warning" />
+          <Loading color="primary" />
         </Grid>
       )
         : (

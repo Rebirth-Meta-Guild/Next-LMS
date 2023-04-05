@@ -8,6 +8,7 @@ import Heading from 'components/Heading';
 import CourseForm, { Inputs } from 'components/forms/CourseForm';
 import { getServerSession } from 'next-auth';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
+import { Container, Grid } from '@nextui-org/react';
 
 type CourseCreateResult = {
   id: number;
@@ -37,8 +38,15 @@ const AdminNewCourse: NextPage = () => {
 
   return (
     <>
-      <Heading>Add a course</Heading>
-      <CourseForm onSubmit={onSubmit} isLoading={mutation.isLoading} />
+      <Grid.Container gap={2} justify="center">
+        <Grid sm={8} xs={12}>
+          <Container>
+            <Heading>Add a course</Heading>
+            <CourseForm onSubmit={onSubmit} isLoading={mutation.isLoading} />
+          </Container>
+        </Grid>
+      </Grid.Container>
+
     </>
   );
 

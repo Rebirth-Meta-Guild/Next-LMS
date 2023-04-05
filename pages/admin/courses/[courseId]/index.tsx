@@ -13,7 +13,7 @@ import { SubmitHandler } from "react-hook-form";
 import Heading from 'components/Heading';
 import toast from 'react-hot-toast';
 import { useMutation } from '@tanstack/react-query'
-import { Button, Grid, Loading } from "@nextui-org/react"
+import { Button, Card, Container, Grid, Loading } from "@nextui-org/react"
 import router from 'next/router'
 import { useState } from 'react'
 import ActionButton from 'components/forms/ActionButton'
@@ -63,44 +63,46 @@ const AdminCourseEdit: NextPage<AdminCourseEditPageProps> = ({ course }) => {
 
   if (session) {
     return (
-      <div className='grid md:grid-cols-2'>
-        <div>
-          <Heading as='h2'>{course.name}</Heading>
-          <CourseForm onSubmit={onSubmit} course={course} isLoading={mutation.isLoading} />
-        </div>
+      <Grid.Container gap={2} justify="center">
+        <Grid sm={5} xs={12}>
+          <Container>
+            <Heading as='h2'>{course.name}</Heading>
+            <CourseForm onSubmit={onSubmit} course={course} isLoading={mutation.isLoading} />
+          </Container>
+        </Grid>
+        <Grid sm={5} xs={12}>
+          <Container>
+            <Heading as='h4'>Lessons</Heading>
+            {course.lessons.length > 0 ? (
+              <>
+                {
+                  course.lessons.map(lesson => (
+                    <Link key={lesson.id} href={`/admin/courses/${course.id}/lessons/${lesson.id}`}>
+                      <a className='flex gap-4 border border-gray-200 rounded-lg mb-6 cursor-pointer'>
+                        {lesson.video?.publicPlaybackId && (
+                          <Image
+                            src={`https://image.mux.com/${lesson.video.publicPlaybackId}/thumbnail.jpg?width=640`}
+                            alt={`Video thumbnail preview for ${lesson.name}`}
+                            width={180}
+                            height={100}
+                          />
+                        )}
 
-        <div>
-          <Heading as='h4'>Lessons</Heading>
-          {course.lessons.length > 0 ? (
-            <>
-              {
-                course.lessons.map(lesson => (
-                  <Link key={lesson.id} href={`/admin/courses/${course.id}/lessons/${lesson.id}`}>
-                    <a className='flex gap-4 border border-gray-200 rounded-lg mb-6 cursor-pointer'>
-                      {lesson.video?.publicPlaybackId && (
-                        <Image
-                          src={`https://image.mux.com/${lesson.video.publicPlaybackId}/thumbnail.jpg?width=640`}
-                          alt={`Video thumbnail preview for ${lesson.name}`}
-                          width={180}
-                          height={100}
-                        />
-                      )}
-
-                      <div className='py-2'>
-                        <Heading as='h5'>{lesson.name}</Heading>
-                      </div>
-                    </a>
-                  </Link>
-                ))
-              }
-            </>
-          ) : (
-            <></>
-          )}
-
-          <ActionButton value="Add a lesson" color="warning" isBordered isLoading={isAddNewLessonLoading} onClickEvent={addNewLesson} />
-        </div>
-      </div>
+                        <div className='py-2'>
+                          <Heading as='h5'>{lesson.name}</Heading>
+                        </div>
+                      </a>
+                    </Link>
+                  ))
+                }
+              </>
+            ) : (
+              <></>
+            )}
+            <ActionButton value="Add a lesson" color="primary" isLoading={isAddNewLessonLoading} onClickEvent={addNewLesson} />
+          </Container>
+        </Grid>
+      </Grid.Container>
     )
   }
   return <p>Access Denied</p>
