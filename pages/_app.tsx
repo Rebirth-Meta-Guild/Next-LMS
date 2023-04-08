@@ -10,6 +10,20 @@ import { Toaster } from 'react-hot-toast'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThirdwebProvider } from '@thirdweb-dev/react'
 
+import { WagmiConfig, createClient, configureChains } from "wagmi"
+import { publicProvider } from "wagmi/providers/public"
+import { mainnet, polygon, optimism } from 'wagmi/chains'
+
+export const { chains, provider } = configureChains(
+  [mainnet, polygon, optimism],
+  [publicProvider()]
+)
+
+const client = createClient({
+  autoConnect: true,
+  provider,
+})
+
 const queryClient = new QueryClient()
 
 const theme = createTheme({
@@ -20,10 +34,10 @@ const theme = createTheme({
       primary: '#ef4130',
     },
     space: {},
-    fonts: { 
+    fonts: {
       sans: "proxima-nova,sans-serif",
       mono: "proxima-nova,sans-serif"
-    }  
+    }
   }
 })
 
@@ -44,14 +58,16 @@ function MyApp({
 
   return (
     <NextUIProvider theme={theme}>
-      <ThirdwebProvider activeChain="polygon">
-        <SessionProvider session={session}>
-          <QueryClientProvider client={queryClient}>
-            {getLayout(<Component {...pageProps} />)}
-            <div><Toaster /></div>
-          </QueryClientProvider>
-        </SessionProvider>
-      </ThirdwebProvider>
+      <WagmiConfig client={client}>
+        <ThirdwebProvider activeChain="polygon">
+          <SessionProvider session={session}>
+            <QueryClientProvider client={queryClient}>
+              {getLayout(<Component {...pageProps} />)}
+              <div><Toaster /></div>
+            </QueryClientProvider>
+          </SessionProvider>
+        </ThirdwebProvider>
+      </WagmiConfig>
     </NextUIProvider>
   );
 }

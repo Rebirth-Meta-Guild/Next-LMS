@@ -86,8 +86,8 @@ const CourseViewer = ({ course, lessonProgress = [], setLessonProgress }: Props)
             onClick={() => setActiveLesson(lesson)}
             key={lesson.id}
             className={clsx({
-              'flex gap-5 cursor-pointer hover:bg-gray-50 px-6 py-4': true,
-              'bg-yellow-50': playbackId === lesson.video?.publicPlaybackId
+              'flex gap-2 cursor-pointer select-lesson px-2 py-2': true,
+              'selected-lesson': playbackId === lesson.video?.publicPlaybackId
             })}
           >
             {lessonProgress.includes(lesson.id) && (
@@ -111,7 +111,7 @@ const CourseViewer = ({ course, lessonProgress = [], setLessonProgress }: Props)
                   <span className='text-sm italic text-slate-600 truncate'> • {formatDuration(Math.round(lesson.video.duration))}</span>
                 )}
               </h2>
-              <p className='text-md italic text-slate-600 my-1 truncate'>{lesson.description}</p>
+              <p className='text-md text-slate-600 my-1 truncate'>{lesson.description}</p>
             </div>
           </a>
         ))}

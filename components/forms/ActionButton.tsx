@@ -6,12 +6,13 @@ type Props = {
     color: NormalColors;
     isLoading: boolean;
     isBordered?: boolean;
+    isXs?: boolean;
     onClickEvent: MouseEventHandler<HTMLButtonElement>;
 }
 
-const ActionButton = ({ value, color, isLoading, isBordered = false, onClickEvent }: Props) => {
+const ActionButton = ({ value, color, isLoading, isBordered = false, isXs = false, onClickEvent }: Props) => {
     return (
-        <Button color={color} bordered={isBordered} onClick={onClickEvent} disabled={isLoading}>
+        <Button size={isXs ? "xs" : "md"} color={color} bordered={isBordered} onClick={onClickEvent} disabled={isLoading}>
             {isLoading ? (<Loading type="points" color="currentColor" size="sm" />) : value }
         </Button>)
 }

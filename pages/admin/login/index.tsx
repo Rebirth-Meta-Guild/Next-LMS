@@ -15,7 +15,7 @@ const AdminLogin: NextPage = () => {
                     <Heading> Please sign in to access this page. </Heading>
                 </Grid>
                 <Grid xs={12} justify="center">
-                    <Button ghost color="primary" size="lg" onClick={() => signIn()}>
+                    <Button color="primary" size="lg" onClick={() => signIn()}>
                         Sign in
                     </Button>
                 </Grid>

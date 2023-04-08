@@ -31,15 +31,31 @@ type ViewCoursePageProps = {
 }
 
 const ViewCourse: NextPageWithLayout<ViewCoursePageProps> = ({ course, completedLessons }) => {
-  const address = useAddress()
   const { data: session } = useSession()
+  const address = session?.user.metamaskAddress
   const { contract } = useContract(contractAddress, "nft-drop")
   const { data: ownedNfts, isLoading } = useOwnedNFTs(contract, address)
   const [lessonProgress, setLessonProgress] = useState(completedLessons)
 
   return (
     <Grid.Container justify="center">
-      {address && isLoading ? (
+      <Grid xs={12} justify="center">
+        {address && isLoading ? (
+          <Loading color="primary" />
+        ) :
+          (
+            (session && session?.user.role != "student" || (ownedNfts && ownedNfts?.length > 0)) ? (
+                <CourseViewer course={course} lessonProgress={lessonProgress} setLessonProgress={setLessonProgress} />
+            ) :
+              <Heading>Access Denied</Heading>
+          )
+        }
+      </Grid>
+
+
+
+
+      {/* {address && isLoading ? (
         <Grid>
           <Loading color="primary" />
         </Grid>
@@ -61,7 +77,7 @@ const ViewCourse: NextPageWithLayout<ViewCoursePageProps> = ({ course, completed
               <Heading>Access Denied</Heading>
             )
         )
-      }
+      } */}
     </Grid.Container>
   )
 }
@@ -84,6 +100,11 @@ export default ViewCourse
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions)
+
+  // need to set this to null to avoid error when serializing
+  if (session && !session?.user.image) {
+    session.user.image = null;
+  }
 
   const id = context?.query?.slug?.[0]
   if (typeof id !== "string") { throw new Error('missing id') };

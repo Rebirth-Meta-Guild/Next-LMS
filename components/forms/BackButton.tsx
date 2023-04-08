@@ -2,12 +2,12 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import ActionButton from "./ActionButton";
 
-
 type Props = {
+    label?: string;
     url?: string;
 }
 
-const BackButton = ({ url }: Props) => {
+const BackButton = ({ label, url }: Props) => {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
 
@@ -19,9 +19,14 @@ const BackButton = ({ url }: Props) => {
             router.back()
         }
     }
-    
+
     return (
-        <ActionButton value="Back" color="primary" isBordered={true} isLoading={isLoading} onClickEvent={handleBack}/>)
+        label ?
+            <ActionButton value={label} color="primary" isBordered={true} isLoading={isLoading} onClickEvent={handleBack} />
+            :
+            <ActionButton value="Back" color="primary" isBordered={true} isLoading={isLoading} onClickEvent={handleBack} />
+
+    )
 }
 
 export default BackButton;

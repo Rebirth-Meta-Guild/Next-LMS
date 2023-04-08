@@ -33,7 +33,7 @@ function LessonForm({ lesson, onSubmit, isLoading, onDelete, isDeleteLoading }: 
         <Spacer />
         <ActionButton value="Delete" color="error" isBordered isLoading={isDeleteLoading} onClickEvent={onDelete} />
         <Spacer />
-        <BackButton />
+        <BackButton label="Done" url={`/admin/courses/${lesson?.courseId}`}/>
       </form>
     </FormProvider>
   );
